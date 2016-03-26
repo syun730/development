@@ -1,0 +1,94 @@
+@import "normalize";
+@import "variables";
+
+//  Font-size Adjustment(Base10px)
+//  100% = 10px(1.0rem) | 160% = 16px(1.6rem) | 220% = 22px(2.2rem)
+//  110% = 11px(1.1rem) | 170% = 17px(1.7rem) | 230% = 23px(2.3rem)
+//  120% = 12px(1.2rem) | 180% = 18px(1.8rem) | 240% = 24px(2.4rem)
+//  130% = 13px(1.3rem) | 190% = 19px(1.9rem) | 250% = 25px(2.5rem)
+//  140% = 14px(1.4rem) | 200% = 20px(2.0rem) | 260% = 26px(2.6rem)
+//  150% = 15px(1.5rem) | 210% = 21px(2.1rem) | 270% = 27px(2.7rem)
+
+html {
+  font-size: 62.5%;
+  // overflow-x: hidden;
+}
+body {
+  font-size: 14px;
+  font-family: sans-serif;
+  color: $text-color-a;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+body, button, input {
+  line-height: 1.4;
+}
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+a:link {
+  color: $link-color-a;
+  text-decoration: none;
+}
+a:visited {
+  color: $link-color-a;
+  text-decoration: none;
+}
+a:hover, a:active, a:focus {
+  color: $link-color-b;
+  text-decoration: none;
+}
+
+// normalize+
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, dl, blockquote, pre {
+  margin: 0;
+  font-size: 1em;
+}
+
+td, th {
+  padding: 0;
+}
+
+ul, ol {
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+dd {
+  margin-left: 0;
+}
+
+img {
+  vertical-align: bottom;
+}
+
+em {
+  font-style: normal;
+  font-weight: bold;
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+// 半角英数表示崩れ
+h1,h2,h3,h4,
+p,
+th,td {
+  word-break: break-all;
+  word-wrap: break-word;
+}

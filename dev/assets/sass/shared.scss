@@ -1,0 +1,26 @@
+@charset "utf-8";
+@import "helpers/mixins";
+@import "base/reset";
+@import "base/variables";
+@import "base/fonts";
+
+// 接頭辞
+// l_ layout
+// c_ component
+// u_ utility
+// is_ 状態を表す
+// js_ JavaScript
+
+body {
+  background: #00f;
+  color: #fff;
+}
+
+.structure {
+  width: 1024px;
+  margin: 0 auto;
+}
+
+// @import "layout";
+// @import "component";
+@import "utilities";

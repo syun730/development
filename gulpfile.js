@@ -88,10 +88,7 @@ gulp.task('copy:css', function () {
 
 // Copy js
 gulp.task('copy:js', function () {
-  gulp.src('.tmp/assets/scripts/*.css')
-  .pipe(cssnext({
-    compress: false
-  }))
+  gulp.src('.tmp/assets/scripts/*.js')
   .pipe(gulp.dest('deploy/assets/scripts/'));
 });
 

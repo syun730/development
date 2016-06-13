@@ -3,7 +3,6 @@ gulp = require('gulp'),
 browserSync = require('browser-sync').create(),
 plumber = require('gulp-plumber'),
 sass = require('gulp-sass'),
-cssnext = require('gulp-cssnext'),
 rename = require('gulp-rename'),
 changed = require('gulp-changed'),
 cached = require('gulp-cached'),
@@ -12,7 +11,9 @@ del = require('del'),
 mergeMediaQueries = require('gulp-merge-media-queries'),
 sourcemaps = require('gulp-sourcemaps'),
 runSequence = require('run-sequence'),
-csscomb = require('gulp-csscomb')
+csscomb = require('gulp-csscomb'),
+cssmin = require('gulp-clean-css'),
+autoprefixer = require('gulp-autoprefixer')
 ;
 
 // サーバー・ブラウザ自動更新
@@ -46,13 +47,13 @@ gulp.task('server', function() {
 gulp.task('sass', function() {
   gulp.src('dev/assets/sass/**/*.scss')
   .pipe(plumber())
-  .pipe(sourcemaps.init())
   .pipe(changed('dev'))
+  .pipe(sourcemaps.init())
   .pipe(sass({
     outputStyle: 'expanded'
   }))
   .pipe(mergeMediaQueries())
-  .pipe(cssnext({
+  .pipe(autoprefixer({
     browsers: 'last 2 versions'
   }))
   .pipe(csscomb())
@@ -63,7 +64,7 @@ gulp.task('sass', function() {
 
 // js
 gulp.task('js', function() {
-  gulp.src('dev/assets/scripts/**/*.js')
+  gulp.src('dev/assets/scripts/**/')
   .pipe(plumber())
   .pipe(sourcemaps.init())
   .pipe(sourcemaps.write('.'))
@@ -73,34 +74,32 @@ gulp.task('js', function() {
 
 // Copy html
 gulp.task('copy:html', function () {
-  gulp.src('dev/**/*.html')
+  return gulp.src('dev/**/*.html')
   .pipe(gulp.dest('deploy'));
 });
 
 // Copy css
 gulp.task('copy:css', function () {
-  gulp.src('.tmp/assets/styles/*.css')
-  .pipe(cssnext({
-    compress: false
-  }))
+  return gulp.src('.tmp/assets/styles/*.css')
+  .pipe(cssmin())
   .pipe(gulp.dest('deploy/assets/styles/'));
 });
 
 // Copy js
 gulp.task('copy:js', function () {
-  gulp.src('.tmp/assets/scripts/*.js')
+  return gulp.src('.tmp/assets/scripts/**/')
   .pipe(gulp.dest('deploy/assets/scripts/'));
 });
 
 // Copy images
 gulp.task('copy:images', function() {
-  gulp.src('dev/assets/images/**/*.{png,jpg,gif,ico,eot,svg,ttf,woff}')
+  return gulp.src('dev/assets/images/**/*.{png,jpg,gif,ico,eot,svg,ttf,woff}')
   .pipe(imagemin())
   .pipe(gulp.dest('deploy/assets/images/'));
 });
 
 // デフォルト
-gulp.task('default', ['server']);
+gulp.task('default', ['server', 'sass']);
 
 // 納品用
 gulp.task('build', ['clean'], function() {

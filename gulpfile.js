@@ -45,17 +45,17 @@ gulp.task('server', function() {
 
 // scss
 gulp.task('sass', function() {
-  gulp.src('dev/assets/sass/**/*.scss')
+  return gulp.src('dev/assets/sass/**/*.scss')
   .pipe(plumber())
   .pipe(changed('dev'))
   .pipe(sourcemaps.init())
   .pipe(sass({
     outputStyle: 'expanded'
-  }))
-  .pipe(mergeMediaQueries())
+  }).on('error', sass.logError))
   .pipe(autoprefixer({
     browsers: 'last 2 versions'
   }))
+  .pipe(mergeMediaQueries())
   .pipe(csscomb())
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest('.tmp/assets/styles/'))
@@ -64,7 +64,7 @@ gulp.task('sass', function() {
 
 // js
 gulp.task('js', function() {
-  gulp.src('dev/assets/scripts/**/')
+  return gulp.src('dev/assets/scripts/**/')
   .pipe(plumber())
   .pipe(sourcemaps.init())
   .pipe(sourcemaps.write('.'))

@@ -1,5 +1,4 @@
-@import "normalize";
-@import "variables";
+@import "ress";
 
 //  Font-size Adjustment(Base10px)
 //  100% = 10px(1.0rem) | 160% = 16px(1.6rem) | 220% = 22px(2.2rem)
@@ -11,20 +10,15 @@
 
 html {
   font-size: 62.5%;
-  // overflow-x: hidden;
 }
 body {
   font-size: 14px;
   font-family: sans-serif;
   color: $text-color-a;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
+  // -webkit-font-smoothing: antialiased;
 }
 body, button, input {
   line-height: 1.4;
-}
-img {
-  max-width: 100%;
 }
 
 a {
@@ -43,52 +37,15 @@ a:hover, a:active, a:focus {
   text-decoration: none;
 }
 
-// normalize+
-h1, h2, h3, h4, h5, h6,
-p, ul, ol, dl, blockquote, pre {
-  margin: 0;
-  font-size: 1em;
-}
-
-td, th {
-  padding: 0;
-}
-
-ul, ol {
-  padding-left: 0;
-}
-
-li {
-  list-style-type: none;
-}
-
-dd {
-  margin-left: 0;
-}
-
-img {
-  vertical-align: bottom;
-}
-
-em {
-  font-style: normal;
-  font-weight: bold;
-}
-
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background-color: transparent;
+// ress+
+small {
+  font-size: 100%;
 }
 
 // 半角英数表示崩れ
-h1,h2,h3,h4,
+h1, h2, h3, h4,
 p,
-th,td {
+th, td {
   word-break: break-all;
   word-wrap: break-word;
 }

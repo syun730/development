@@ -1,9 +1,10 @@
-$color-a: #535353;
+$color-a: #000;
+$color-b: #81bd38;
 
-$link-color-a: #81bd38;
+$link-color-a: $color-b;
 $link-color-b: $link-color-a;
 
-$text-color-a: #000;
+$text-color-a: $color-a;
 
 // Path
 $path-a: "../../";

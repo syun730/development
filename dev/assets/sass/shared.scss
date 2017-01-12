@@ -1,33 +1,34 @@
 @charset "UTF-8";
-@import "base/variables";
-@import "helpers/mixins";
-@import "base/reset";
-@import "base/fonts";
+@import "foundation/variables";
+@import "foundation/mixins";
+@import "foundation/base";
+@import "foundation/fonts";
+@import "includes/sprite";
 
 // 接頭辞
-// l_ layout
-// c_ component
-// p_ project
-// u_ utility
-// is_ 状態を表す
-// js_ JavaScript
-
-body {
-  color: #f00;
-}
+// l- Layout
+// c- Component
+// p- Project
+// u- Utitlity
+// is- State
+// js- JavaScript
 
 /* Layout
    ----------------------------------------------------------------- */
-@import "layout";
+@import "layout/**/*.scss";
 
 /* Component
    ----------------------------------------------------------------- */
-@import "component";
+@import "object/component/**/*.scss";
 
 /* Project
    ----------------------------------------------------------------- */
-@import "project";
+@import "object/project/**/*.scss";
 
 /* Utitlity
    ----------------------------------------------------------------- */
-@import "utilities";
+@import "object/utitlity/**/*.scss";
+
+.aaa {
+  @include sprite($icon_club01);
+}

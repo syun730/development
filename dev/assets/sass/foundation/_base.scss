@@ -13,17 +13,14 @@ html {
 }
 body {
   font-size: 14px;
-  font-family: sans-serif;
+  font-family: $sans-serif-a;
   color: $text-color-a;
-  // -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 body, button, input {
-  line-height: 1.4;
+  line-height: 1.466666667;
 }
 
-a {
-  text-decoration: none;
-}
 a:link {
   color: $link-color-a;
   text-decoration: none;
@@ -38,14 +35,47 @@ a:hover, a:active, a:focus {
 }
 
 // ress+
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, dl, blockquote, pre {
+  margin: 0;
+  font-size: 1em;
+}
+td, th {
+  padding: 0;
+}
+ul, ol {
+  padding-left: 0;
+}
+li {
+  list-style-type: none;
+}
+dd {
+  margin-left: 0;
+}
+img {
+  max-width: 100%;
+  vertical-align: bottom;
+}
 small {
   font-size: 100%;
+}
+input,
+button,
+select {
+  outline: none;
+}
+button {
+  &:disabled {
+    opacity: .5;
+    pointer-events: none;
+  }
 }
 
 // 半角英数表示崩れ
 h1, h2, h3, h4,
 p,
-th, td {
+th, td,
+dt, dd {
   word-break: break-all;
   word-wrap: break-word;
 }

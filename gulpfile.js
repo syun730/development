@@ -3,6 +3,7 @@ gulp = require('gulp'),
 browserSync = require('browser-sync').create(),
 plumber = require('gulp-plumber'),
 sass = require('gulp-sass'),
+sassGlob = require('gulp-sass-glob'),
 rename = require('gulp-rename'),
 changed = require('gulp-changed'),
 cached = require('gulp-cached'),
@@ -13,7 +14,8 @@ sourcemaps = require('gulp-sourcemaps'),
 runSequence = require('run-sequence'),
 csscomb = require('gulp-csscomb'),
 cssmin = require('gulp-clean-css'),
-autoprefixer = require('gulp-autoprefixer')
+autoprefixer = require('gulp-autoprefixer'),
+spritesmith = require('gulp.spritesmith');
 ;
 
 // サーバー・ブラウザ自動更新
@@ -49,6 +51,7 @@ gulp.task('sass', function() {
   .pipe(plumber())
   .pipe(changed('dev'))
   .pipe(sourcemaps.init())
+  .pipe(sassGlob())
   .pipe(sass({
     outputStyle: 'expanded'
   }).on('error', sass.logError))
@@ -71,6 +74,22 @@ gulp.task('js', function() {
   .pipe(gulp.dest('.tmp/assets/scripts/'))
   .pipe(browserSync.stream());
 });
+
+// sprite
+gulp.task('sprite', function() {
+  var spriteData = gulp.src('dev/assets/spritesheet/**/*.png')
+  .pipe(spritesmith({
+    imgName: 'sprite.png',
+    cssName: '_sprite.scss',
+    imgPath: '../images/sprite.png',
+    cssFormat: 'scss',
+  }));
+  spriteData.img
+    .pipe(gulp.dest('dev/assets/images'));
+  spriteData.css
+    .pipe(gulp.dest('dev/assets/sass/includes'));
+});
+
 
 // Copy html
 gulp.task('copy:html', function () {
@@ -99,7 +118,7 @@ gulp.task('copy:images', function() {
 });
 
 // デフォルト
-gulp.task('default', ['server', 'sass']);
+gulp.task('default', ['server', 'sass', 'sprite']);
 
 // 納品用
 gulp.task('build', ['clean'], function() {

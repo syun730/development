@@ -46,11 +46,11 @@ gulp.task('styleguide', function() {
     title: 'スタイルガイド',
     server: true,
     port: 4000,
-    rootPath: './deploy/styleguide',
-    overviewPath: './deploy/styleguide/overview.md',
+    rootPath: 'dev/styleguide',
+    overviewPath: 'dev/styleguide/overview.md',
     appRoot: '/styleguide'
   }))
-  .pipe(gulp.dest('./deploy/styleguide'));
+  .pipe(gulp.dest('./dev/styleguide'));
 });
 // gulp.task('styleguide:applystyles', function() {
 //   return gulp.src('dev/assets/sass/**/*.scss')
@@ -60,7 +60,7 @@ gulp.task('styleguide', function() {
 
 // html
 gulp.task('html', function() {
-  return gulp.src(['dev/**/*.html', '!dev/common/*.html'])
+  return gulp.src(['dev/**/*.html', '!dev/common/*.html', '!dev/styleguide/**/*.html'])
   .pipe(plumber())
   .pipe(cached('dev'))
   .pipe(fileinclude({basepath: './dev/'}))

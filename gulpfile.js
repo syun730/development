@@ -15,7 +15,9 @@ runSequence = require('run-sequence'),
 csscomb = require('gulp-csscomb'),
 cssmin = require('gulp-clean-css'),
 autoprefixer = require('gulp-autoprefixer'),
-spritesmith = require('gulp.spritesmith');
+spritesmith = require('gulp.spritesmith'),
+fileinclude = require('gulp-file-include'),
+styleguide = require('sc5-styleguide')
 ;
 
 // サーバー・ブラウザ自動更新
@@ -31,19 +33,40 @@ gulp.task('server', function() {
     notify: false
   });
   // ファイル監視
-  gulp.watch('dev/**/*.html').on('change', browserSync.reload);
-  gulp.watch('dev/assets/sass/**/*.scss', ['sass']);
+  // gulp.watch('dev/**/*.html').on('change', browserSync.reload);
+  gulp.watch('dev/**/*.html', ['html']);
+  gulp.watch('dev/assets/sass/**/*.scss', ['sass','styleguide']);
   gulp.watch('dev/scripts/**/*.js', ['js']);
 });
 
+// styleguide
+gulp.task('styleguide', function() {
+  return gulp.src('dev/assets/sass/**/*.scss')
+  .pipe(styleguide.generate({
+    title: 'スタイルガイド',
+    server: true,
+    port: 4000,
+    rootPath: './deploy/styleguide',
+    overviewPath: './deploy/styleguide/overview.md',
+    appRoot: '/styleguide'
+  }))
+  .pipe(gulp.dest('./deploy/styleguide'));
+});
+// gulp.task('styleguide:applystyles', function() {
+//   return gulp.src('dev/assets/sass/**/*.scss')
+//     .pipe(styleguide.applyStyles())
+//     .pipe(gulp.dest('styleguide'))
+// })
+
 // html
-// gulp.task('html', function() {
-//   gulp.src('dev/**/*.html')
-//   .pipe(plumber())
-//   .pipe(cached('dev'))
-//   .pipe(gulp.dest('.tmp'))
-//   .pipe(browserSync.reload({stream:true}));
-// });
+gulp.task('html', function() {
+  return gulp.src(['dev/**/*.html', '!dev/common/*.html'])
+  .pipe(plumber())
+  .pipe(cached('dev'))
+  .pipe(fileinclude({basepath: './dev/'}))
+  .pipe(gulp.dest('.tmp'))
+  .pipe(browserSync.stream());
+});
 
 // scss
 gulp.task('sass', function() {
@@ -93,14 +116,14 @@ gulp.task('sprite', function() {
 
 // Copy html
 gulp.task('copy:html', function () {
-  return gulp.src('dev/**/*.html')
+  return gulp.src('.tmp/**/*.html')
   .pipe(gulp.dest('deploy'));
 });
 
 // Copy css
 gulp.task('copy:css', function () {
   return gulp.src('.tmp/assets/styles/*.css')
-  .pipe(cssmin())
+  // .pipe(cssmin())
   .pipe(gulp.dest('deploy/assets/styles/'));
 });
 
@@ -118,7 +141,7 @@ gulp.task('copy:images', function() {
 });
 
 // デフォルト
-gulp.task('default', ['server', 'sass', 'sprite']);
+gulp.task('default', ['server', 'sass', 'html', 'sprite']);
 
 // 納品用
 gulp.task('build', ['clean'], function() {

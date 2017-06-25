@@ -24,12 +24,14 @@ if (ua.indexOf('iphone') != -1 || ua.indexOf('ipad') != -1 || ua.indexOf('ipod')
 
 // Navigation
 var Navigation = (function($) {
+
   function init() {
     var $wrapper = $('#l-wrapper');
     var $header = $('#l-header');
     var $nav = $header.find('.c-nav');
     var $nav_child = $header.find('.c-nav--child');
     var nav_state = ($wrapper.hasClass('is-nav-child-opened'))? 'opened' : 'closed';
+    var nav_hover_delaytimer;
 
     if(os == 'pc') {
       $nav.find('a').on('click', function(event){
@@ -37,12 +39,32 @@ var Navigation = (function($) {
       });
       $nav.hover(
         function() {
+          clearTimeout(nav_hover_delaytimer);
           if (nav_state == 'closed') {
             $wrapper.addClass('is-nav-child-open');
           }
         },
         function() {
-          $wrapper.removeClass('is-nav-child-open');
+          if (nav_state == 'closed') {
+            nav_hover_delaytimer = setTimeout(function(){
+              $wrapper.removeClass('is-nav-child-open');
+            }, 1000);
+          }
+        }
+      );
+      $nav_child.hover(
+        function () {
+          clearTimeout(nav_hover_delaytimer);
+          if (nav_state == 'closed') {
+            $wrapper.addClass('is-nav-child-open');
+          }
+        },
+        function () {
+          if (nav_state == 'closed') {
+            nav_hover_delaytimer = setTimeout(function(){
+              $wrapper.removeClass('is-nav-child-open');
+            }, 1000);
+          }
         }
       );
     }

@@ -67,6 +67,12 @@ var Navigation = (function($) {
           }
         }
       );
+      $nav.find('li').mouseenter(function(){
+        var index = $nav.find('li').index(this);
+        $nav_child.find('nav').css('display', 'none');
+        $nav_child.find('nav').eq(index).stop().css({'display': 'block', 'opacity': 0}).animate({'opacity': 1}, 300, 'linear');
+        console.log(index);
+      });
     }
   }
   return { 'init': init }

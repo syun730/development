@@ -45,8 +45,10 @@
 .c-nav {
   > ul {
     font-size: 0;
+    text-align: center;
     li {
       display: inline-block;
+      width: 100px;
       font-size: 1.4rem;
     }
   }

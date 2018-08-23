@@ -134,10 +134,9 @@ gulp.task('copy:images', function () {
 gulp.task('default', gulp.series('server', 'sass', 'html', 'sprite'));
 
 // 納品用
+gulp.task('build', gulp.series(clean, 'copy:images', 'copy:html', 'copy:css', 'copy:js'));
+
 function clean(done) {
   del(['deploy']);
   done();
 }
-gulp.task('build', gulp.series(clean, gulp.parallel('copy:html', 'copy:css', 'copy:js', 'copy:images')));
-
-

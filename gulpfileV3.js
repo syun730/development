@@ -1,4 +1,4 @@
-const
+var
 browserSync = require('browser-sync').create(),
 gulp = require('gulp'),
 autoprefixer = require('autoprefixer'),
@@ -13,7 +13,9 @@ mqpacker = require('css-mqpacker'),
 cached = require('gulp-cached'),
 imagemin = require('gulp-imagemin'),
 del = require('del'),
+runSequence = require('run-sequence'),
 spritesmith = require('gulp.spritesmith'),
+fileinclude = require('gulp-file-include'),
 styleguide = require('sc5-styleguide')
 ;
 
@@ -29,25 +31,26 @@ gulp.task('server', function() {
     open: false,
     notify: false
   });
+  // ファイル監視
   // gulp.watch('dev/**/*.html').on('change', browserSync.reload);
-  gulp.watch('dev/**/*.html', gulp.series('html'));
-  gulp.watch('dev/assets/sass/**/*.scss', gulp.series('sass'));
-  gulp.watch('dev/scripts/**/*.js', gulp.series('js'));
+  gulp.watch('dev/**/*.html', ['html']);
+  gulp.watch('dev/assets/sass/**/*.scss', ['sass','styleguide']);
+  gulp.watch('dev/scripts/**/*.js', ['js']);
 });
 
 // styleguide
-// gulp.task('styleguide', function() {
-//   return gulp.src('dev/assets/sass/**/*.scss')
-//   .pipe(styleguide.generate({
-//     title: 'スタイルガイド',
-//     server: true,
-//     port: 4000,
-//     rootPath: 'dev/styleguide',
-//     overviewPath: 'dev/styleguide/overview.md',
-//     appRoot: '/styleguide'
-//   }))
-//   .pipe(gulp.dest('./dev/styleguide'));
-// });
+gulp.task('styleguide', function() {
+  return gulp.src('dev/assets/sass/**/*.scss')
+  .pipe(styleguide.generate({
+    title: 'スタイルガイド',
+    server: true,
+    port: 4000,
+    rootPath: 'dev/styleguide',
+    overviewPath: 'dev/styleguide/overview.md',
+    appRoot: '/styleguide'
+  }))
+  .pipe(gulp.dest('./dev/styleguide'));
+});
 
 // html
 gulp.task('html', function() {
@@ -114,6 +117,7 @@ gulp.task('copy:html', function () {
 // Copy css
 gulp.task('copy:css', function () {
   return gulp.src('.tmp/assets/styles/*.css')
+  // .pipe(cssmin())
   .pipe(gulp.dest('deploy/assets/styles/'));
 });
 
@@ -124,20 +128,22 @@ gulp.task('copy:js', function () {
 });
 
 // Copy images
-gulp.task('copy:images', function () {
+gulp.task('copy:images', function() {
   return gulp.src('dev/assets/images/**/*.{png,jpg,gif,ico,eot,svg,ttf,woff}')
   .pipe(imagemin())
   .pipe(gulp.dest('deploy/assets/images/'));
 });
 
 // デフォルト
-gulp.task('default', gulp.series('server', 'sass', 'html', 'sprite'));
+gulp.task('default', ['server', 'sass', 'html', 'sprite']);
 
 // 納品用
-function clean(done) {
-  del(['deploy']);
-  done();
-}
-gulp.task('build', gulp.series(clean, gulp.parallel('copy:html', 'copy:css', 'copy:js', 'copy:images')));
-
-
+gulp.task('build', ['clean'], function() {
+    gulp.start(['create']);
+});
+gulp.task('clean', function(callback) {
+  return del(['deploy'], callback);
+});
+gulp.task('create', function(callback) {
+  runSequence('copy:html', 'copy:css', 'copy:js', 'copy:images', callback);
+});

@@ -1,20 +1,19 @@
 var
-gulp = require('gulp'),
 browserSync = require('browser-sync').create(),
+gulp = require('gulp'),
+autoprefixer = require('autoprefixer'),
+fileinclude = require('gulp-file-include'),
 plumber = require('gulp-plumber'),
 sass = require('gulp-sass'),
 sassGlob = require('gulp-sass-glob'),
-rename = require('gulp-rename'),
-changed = require('gulp-changed'),
+sourcemaps = require('gulp-sourcemaps'),
+postcss = require('gulp-postcss'),
+cssdeclsort = require('css-declaration-sorter'),
+mqpacker = require('css-mqpacker'),
 cached = require('gulp-cached'),
 imagemin = require('gulp-imagemin'),
 del = require('del'),
-mergeMediaQueries = require('gulp-merge-media-queries'),
-sourcemaps = require('gulp-sourcemaps'),
 runSequence = require('run-sequence'),
-csscomb = require('gulp-csscomb'),
-cssmin = require('gulp-clean-css'),
-autoprefixer = require('gulp-autoprefixer'),
 spritesmith = require('gulp.spritesmith'),
 fileinclude = require('gulp-file-include'),
 styleguide = require('sc5-styleguide')
@@ -25,7 +24,7 @@ gulp.task('server', function() {
   browserSync.init({
     server: {
       baseDir: ['.tmp', 'dev'],
-      directory: false
+      directory: true
     },
     port: 8888,
     ghostMode: true,
@@ -52,11 +51,6 @@ gulp.task('styleguide', function() {
   }))
   .pipe(gulp.dest('./dev/styleguide'));
 });
-// gulp.task('styleguide:applystyles', function() {
-//   return gulp.src('dev/assets/sass/**/*.scss')
-//     .pipe(styleguide.applyStyles())
-//     .pipe(gulp.dest('styleguide'))
-// })
 
 // html
 gulp.task('html', function() {
@@ -72,17 +66,17 @@ gulp.task('html', function() {
 gulp.task('sass', function() {
   return gulp.src('dev/assets/sass/**/*.scss')
   .pipe(plumber())
-  .pipe(changed('dev'))
   .pipe(sourcemaps.init())
   .pipe(sassGlob())
   .pipe(sass({
     outputStyle: 'expanded'
   }).on('error', sass.logError))
-  .pipe(autoprefixer({
-    browsers: 'last 2 versions'
-  }))
-  .pipe(mergeMediaQueries())
-  .pipe(csscomb())
+  .pipe(postcss([mqpacker()]))
+  .pipe(postcss([cssdeclsort({order: 'smacss'})]))
+  .pipe(postcss([autoprefixer({
+    browsers: ['last 1 versions', 'ie >= 11', 'iOS >= 10', 'Android >= 5'],
+    grid: true
+  })]))
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest('.tmp/assets/styles/'))
   .pipe(browserSync.stream());

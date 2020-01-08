@@ -93,3 +93,6 @@ sftp-config.json
 
 .tmp/
 deploy/
+dev/styleguide
+bk
+public

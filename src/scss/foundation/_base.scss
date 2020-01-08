@@ -1,36 +1,19 @@
-@import "ress";
-
-//  Font-size Adjustment(Base10px)
-//  100% = 10px(1.0rem) | 160% = 16px(1.6rem) | 220% = 22px(2.2rem)
-//  110% = 11px(1.1rem) | 170% = 17px(1.7rem) | 230% = 23px(2.3rem)
-//  120% = 12px(1.2rem) | 180% = 18px(1.8rem) | 240% = 24px(2.4rem)
-//  130% = 13px(1.3rem) | 190% = 19px(1.9rem) | 250% = 25px(2.5rem)
-//  140% = 14px(1.4rem) | 200% = 20px(2.0rem) | 260% = 26px(2.6rem)
-//  150% = 15px(1.5rem) | 210% = 21px(2.1rem) | 270% = 27px(2.7rem)
-
 html {
   font-size: 62.5%;
 }
 body {
   font-size: 14px;
   font-family: $sans-serif-a;
-  color: $text-color-a;
+  font-feature-settings: 'palt';
+  color: $color-a;
   -webkit-font-smoothing: antialiased;
 }
 body, button, input {
   line-height: 1.466666667;
 }
 
-a:link {
-  color: $link-color-a;
-  text-decoration: none;
-}
-a:visited {
-  color: $link-color-a;
-  text-decoration: none;
-}
-a:hover, a:active, a:focus {
-  color: $link-color-b;
+a {
+  color: $color-b;
   text-decoration: none;
 }
 
@@ -78,4 +61,20 @@ th, td,
 dt, dd {
   word-break: break-all;
   word-wrap: break-word;
+}
+
+.only-sp {
+  display: none;
+
+  @include mq(md) {
+    display: block;
+  }
+}
+
+.only-pc {
+  display: inherit;
+
+  @include mq(md) {
+    display: none;
+  }
 }

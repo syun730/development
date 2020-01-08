@@ -1,34 +1,40 @@
-@charset "UTF-8";
+/* Vendor
+   ----------------------------------------------------------------- */
+@import "vendor/ress";
+
+/* Foundation
+   ----------------------------------------------------------------- */
+// variables
 @import "foundation/variables";
+
+// functions
+@import "foundation/functions";
+
+// mixins
 @import "foundation/mixins";
+
+// base
 @import "foundation/base";
-@import "foundation/fonts";
-@import "includes/sprite";
 
-// 接頭辞
-// l- Layout
-// c- Component
-// p- Project
-// u- Utitlity
-// is- State
-// js- JavaScript
-
-/* Layout
+/* Layout (prefix: l- )
    ----------------------------------------------------------------- */
 @import "layout/**/*.scss";
 
-/* Component
+/* Component (prefix: c- )
    ----------------------------------------------------------------- */
 @import "object/component/**/*.scss";
 
-/* Project
+/* Project (prefix: p- )
    ----------------------------------------------------------------- */
 @import "object/project/**/*.scss";
 
-/* Utitlity
+/* Utitlity (prefix: u- )
    ----------------------------------------------------------------- */
 @import "object/utitlity/**/*.scss";
 
-.aaa {
-  @include sprite($icon_club01);
+#l-header {
+  z-index: z(content);
+  @include mq(md) {
+    margin: 100*$vw 40*$vw;
+  }
 }

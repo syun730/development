@@ -1,0 +1,59 @@
+@mixin fs( $size, $importantFlg:false ) {
+  font-size: $size + px + if($importantFlg, ' !important', '');
+  font-size: $size/10 + rem + if($importantFlg, ' !important', '');
+}
+
+// media query
+// --------------------------------------------------------------------------
+// @include mq(引数1, 引数2) {
+//   [style]
+// }
+//
+// 引数1: sm, md, lg, number（_variables.scssのBreakpoint参照）
+// 引数2: '', min
+
+// 1. マルチデバイスで共通のスタイル
+// 2. 特に小さいデバイス向けの調整スタイル
+// 3. スマートフォン向けのスタイル
+// 4. タブレット、PC向けのスタイル
+// 5. 1209px(1208px + 1px)以上向けのスタイル
+//
+// ```scss
+// .example {
+//   color: #000; // 1
+//
+//   @include mq(sm) {
+//     content: 'sm'; // 2
+//   }
+//
+//   @include mq(md) {
+//     content: 'md'; // 3
+//   }
+//
+//   @include mq(md, min) {
+//     content: 'md min'; // 4
+//   }
+//
+//   @include mq(1208px, min) {
+//     content: 'number'; // 5
+//   }
+// }
+// ```
+@mixin mq($size, $width: max) {
+  $result: 0;
+  @if (type-of($size) == number) {
+    $result: $size;
+  } @else {
+    @each $key, $value in $screen {
+      @if ($key == $size) {
+        $result: $value;
+      }
+    }
+  }
+  @if ($width == min) {
+    $result: $result + 1;
+  }
+  @media (#{$width}-width: #{$result}) {
+    @content;
+  }
+}

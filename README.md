@@ -5,8 +5,8 @@
 ## 開発開始時
 
 ```
-$ npm install
-$ gulp
+$ yarn install
+$ yarn start
 ```
 
 - http://localhost:8888 でローカルサーバーが起動。
@@ -16,7 +16,7 @@ $ gulp
 ## 納品時
 
 ```
-$ gulp build
+$ yarn build
 ```
 
-- deployフォルダに納品ファイルが作成されます。
+- publicフォルダに納品ファイルが作成されます。

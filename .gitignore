@@ -94,3 +94,8 @@ sftp-config.json
 .tmp/
 deploy/
 dev/styleguide
+<<<<<<< HEAD
+=======
+bk
+public
+>>>>>>> master

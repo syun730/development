@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const
 browserSync = require('browser-sync').create(),
 gulp = require('gulp'),
@@ -16,18 +17,86 @@ del = require('del'),
 spritesmith = require('gulp.spritesmith'),
 styleguide = require('sc5-styleguide')
 ;
+=======
+const gulp = require('gulp')
+const sass = require('gulp-sass')
+const sourcemaps = require('gulp-sourcemaps')
+const autoprefixer = require('gulp-autoprefixer')
+const rename = require('gulp-rename')
+const browserSync = require('browser-sync').create()
+const sassGlob = require('gulp-sass-glob')
+const uglify = require('gulp-uglify-es').default
+const through2 = require('through2')
+const del = require('del')
+>>>>>>> master
 
-// サーバー・ブラウザ自動更新
-gulp.task('server', function() {
+gulp.task('html', cb => {
+  return gulp
+    .src([
+      'src/html/**/*.html',
+      '!src/html/_includes/**/*'
+    ])
+    .pipe(gulp.dest('./public'))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('sass', cb => {
+  return (
+    gulp
+      .src('./src/scss/**/*.scss')
+      .pipe(sassGlob())
+      .pipe(sourcemaps.init())
+      .pipe(
+        sass({
+          outputStyle: 'compressed'
+        }).on('error', sass.logError)
+      )
+      .pipe(autoprefixer({ grid: true }))
+      .pipe(sourcemaps.write('.'))
+      // タイムスタンプを書き換える
+      .pipe(
+        through2.obj((chunk, enc, callback) => {
+          const date = new Date()
+          chunk.stat.atime = date
+          chunk.stat.mtime = date
+          callback(null, chunk)
+        })
+      )
+      .pipe(gulp.dest('./public/assets/css'))
+      .pipe(browserSync.stream())
+  )
+})
+
+gulp.task('js', cb => {
+  return gulp
+    .src('./src/js/**/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('./public/assets/js'))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('media', cb => {
+  return gulp
+    .src('./src/media/**/*')
+    .pipe(gulp.dest('./public/assets/media'))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('serve', cb => {
   browserSync.init({
     server: {
+<<<<<<< HEAD
       baseDir: ['.tmp', 'dev'],
+=======
+      baseDir: './public',
+>>>>>>> master
       directory: true
     },
     port: 8888,
     ghostMode: true,
-    open: false,
+    open: true,
     notify: false
+<<<<<<< HEAD
   });
   // gulp.watch('dev/**/*.html').on('change', browserSync.reload);
   gulp.watch('dev/**/*.html', gulp.series('html'));
@@ -140,3 +209,20 @@ function clean(done) {
   del(['deploy']);
   done();
 }
+=======
+  })
+  gulp.watch('./src/html/**/*', gulp.task('html'))
+  gulp.watch('./src/scss/**/*', gulp.task('sass'))
+  gulp.watch('./src/js/**/*', gulp.task('js'))
+  gulp.watch('./src/media/**/*', gulp.task('media'))
+})
+
+gulp.task('clean', done => {
+  del.sync('./public');
+  done();
+})
+
+gulp.task('build', gulp.parallel('html', 'sass', 'js', 'media'))
+gulp.task('start', gulp.series('build', 'serve'))
+gulp.task('clean', gulp.series('clean', gulp.parallel('html', 'sass', 'js', 'media')))
+>>>>>>> master

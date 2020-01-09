@@ -3,18 +3,32 @@ const sass = require('gulp-sass')
 const sourcemaps = require('gulp-sourcemaps')
 const autoprefixer = require('gulp-autoprefixer')
 const rename = require('gulp-rename')
+const ejs = require('gulp-ejs')
 const browserSync = require('browser-sync').create()
 const sassGlob = require('gulp-sass-glob')
 const uglify = require('gulp-uglify-es').default
 const through2 = require('through2')
 const del = require('del')
 
-gulp.task('html', cb => {
+// gulp.task('html', cb => {
+//   return gulp
+//     .src([
+//       'src/html/**/*.html',
+//       '!src/html/_includes/**/*'
+//     ])
+//     .pipe(gulp.dest('./public'))
+//     .pipe(browserSync.stream())
+// })
+
+gulp.task('ejs', cb => {
   return gulp
     .src([
-      'src/html/**/*.html',
-      '!src/html/_includes/**/*'
+      './src/ejs/**/*.ejs',
+      '!./src/ejs/_includes/**/*',
+      '!./src/ejs/**/_*.ejs'
     ])
+    .pipe(ejs())
+    .pipe(rename({ extname: '.html' }))
     .pipe(gulp.dest('./public'))
     .pipe(browserSync.stream())
 })
@@ -72,7 +86,8 @@ gulp.task('serve', cb => {
     open: true,
     notify: false
   })
-  gulp.watch('./src/html/**/*', gulp.task('html'))
+  // gulp.watch('./src/html/**/*', gulp.task('html'))
+  gulp.watch('./src/ejs/**/*', gulp.task('ejs'))
   gulp.watch('./src/scss/**/*', gulp.task('sass'))
   gulp.watch('./src/js/**/*', gulp.task('js'))
   gulp.watch('./src/media/**/*', gulp.task('media'))
@@ -83,6 +98,6 @@ gulp.task('clean', done => {
   done();
 })
 
-gulp.task('build', gulp.parallel('html', 'sass', 'js', 'media'))
+gulp.task('build', gulp.parallel('ejs', 'sass', 'js', 'media'))
 gulp.task('start', gulp.series('build', 'serve'))
-gulp.task('clean', gulp.series('clean', gulp.parallel('html', 'sass', 'js', 'media')))
+gulp.task('clean', gulp.series('clean', gulp.parallel('ejs', 'sass', 'js', 'media')))

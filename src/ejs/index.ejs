@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <%-
+    include('_includes/_head', {
+      meta: {
+        title: '',
+        description: 'ディスクリプション'
+      }
+    });
+  %>
 </head>
 <body>
+  <%-
+    include('_includes/_nav', {
+      current: 'home'
+    });
+  %>
+
   <p>Hello World.</p>
+
+  <div class="test-grid">
+    <div class="test-grid__a">1</div>
+    <div class="test-grid__b">2</div>
+    <div class="test-grid__c">3</div>
+  </div>
+
+  <div class="test-grid2">
+    <div class="test-grid__a">1</div>
+    <div class="test-grid__b">2</div>
+    <div class="test-grid__c">3</div>
+  </div>
 
   <script src="/assets/js/app.js"></script>
 </body>

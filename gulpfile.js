@@ -44,7 +44,10 @@ gulp.task('sass', cb => {
           outputStyle: 'compressed'
         }).on('error', sass.logError)
       )
-      .pipe(autoprefixer({ grid: true }))
+      .pipe(autoprefixer({
+        cascade: false,
+        grid: 'autoplace'
+      }))
       .pipe(sourcemaps.write('.'))
       // タイムスタンプを書き換える
       .pipe(
